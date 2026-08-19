@@ -51,10 +51,6 @@
     </site>
   </distributionManagement>
   <properties>
-    <!-- CI-friendly version (Phase 14): one ${revision} for the whole
-         platform. develop builds stay SNAPSHOT; a release build is just
-         `mvn -Drevision=X.Y.Z ...` — no pom edits, no release plugin. -->
-    <revision>0.0.1-SNAPSHOT</revision>
     <iblog.version>0.13.2-SNAPSHOT</iblog.version>
     <surefire.failIfNoTests>false</surefire.failIfNoTests>
     <jacoco.max.missed.classes>99</jacoco.max.missed.classes>
