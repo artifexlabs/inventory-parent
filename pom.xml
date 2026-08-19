@@ -74,6 +74,11 @@
         <artifactId>inventory-impl-pg</artifactId>
         <version>${inventory.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.artifexlabs.inventory</groupId>
+        <artifactId>inventory-impl-changeset</artifactId>
+        <version>${inventory.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
