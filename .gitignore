@@ -1,7 +1,7 @@
+.*
+!.gitignore
 .idea/**
 *.iml
 target
-.*
-!.gitignore
 pom.xml.*
 .flattened-pom.xml
