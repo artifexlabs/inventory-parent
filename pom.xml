@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     @formatter:off
@@ -17,17 +18,20 @@
     @formatter:on
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-  <groupId>io.artifexlabs.parents</groupId>
-  <artifactId>artifex-maven-parent</artifactId>
-  <version>2</version>
+    <groupId>io.artifexlabs.parents</groupId>
+    <artifactId>artifex-maven-parent</artifactId>
+    <version>2</version>
   </parent>
+
   <groupId>io.artifexlabs.inventory</groupId>
   <artifactId>inventory-parent</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
+
   <name>${project.artifactId}</name>
   <description>Parent for the LE Inventory project</description>
   <url>${github.url.base}/${project.artifactId}</url>
@@ -38,25 +42,36 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
     <connection>scm:git:${git.url}</connection>
-    <url>scm:git:${git.url}</url>
     <developerConnection>scm:git:${git.url}</developerConnection>
+    <url>${git.scm.url}</url>
     <tag>HEAD</tag>
   </scm>
+  <issueManagement>
+    <url>${issue.management.url}</url>
+    <system>GitHub</system>
+  </issueManagement>
   <distributionManagement>
     <site>
       <id>central</id>
       <url>${site.target.url}/</url>
     </site>
   </distributionManagement>
+
   <properties>
     <iblog.version>0.13.2-SNAPSHOT</iblog.version>
     <surefire.failIfNoTests>false</surefire.failIfNoTests>
     <jacoco.max.missed.classes>99</jacoco.max.missed.classes>
     <test.coverage.percentage.required>0</test.coverage.percentage.required>
+    <org.infinispan.version>14.0.20.Final</org.infinispan.version>
+    <org.infinispan.protostream.version>4.6.5.Final</org.infinispan.protostream.version>
     <inventory.version>0.1.0-SNAPSHOT</inventory.version>
+    <zxing.version>3.5.3</zxing.version>
+    <bcrypt.version>0.9.0</bcrypt.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -79,7 +94,78 @@
         <artifactId>inventory-impl-changeset</artifactId>
         <version>${inventory.version}</version>
       </dependency>
+      <!-- vertx-infinispan's jakarta line targets Infinispan 14 (15 hides
+           DefaultCacheManager.getTransport(), 13 is the javax line, and the
+           quarkus-bom's commons/protostream overrides must not leak in) —
+           pin the whole embedded set coherently. -->
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-core-jakarta</artifactId>
+      <version>${org.infinispan.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-multimap-jakarta</artifactId>
+      <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-core</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-multimap</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-clustered-lock</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-clustered-counter</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-commons</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-component-annotations</artifactId>
+        <version>${org.infinispan.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan.protostream</groupId>
+        <artifactId>protostream</artifactId>
+        <version>${org.infinispan.protostream.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.infinispan.protostream</groupId>
+        <artifactId>protostream-types</artifactId>
+        <version>${org.infinispan.protostream.version}</version>
+      </dependency>
+    <dependency>
+      <!-- QR rendering happens beside the label printer, in the labels worker -->
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+      <version>${zxing.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+      <version>${zxing.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>at.favre.lib</groupId>
+      <artifactId>bcrypt</artifactId>
+      <version>${bcrypt.version}</version>
+    </dependency>
     </dependencies>
+
   </dependencyManagement>
   <dependencies>
     <dependency>
@@ -98,8 +184,7 @@
 
   <build>
     <plugins>
-      <plugin>
-        <!-- Library jars consumed by the Quarkus apps MUST carry a Jandex
+      <plugin><!-- Library jars consumed by the Quarkus apps MUST carry a Jandex
              index (META-INF/jandex.idx): without one, ArC only finds their
              types (producer return types like impl's UserStore) through the
              flaky FacadeClassLoader fallback path — the intermittent
@@ -142,5 +227,4 @@
 
   <profiles>
   </profiles>
-
 </project>
