@@ -69,7 +69,7 @@
     <org.infinispan.protostream.version>4.6.5.Final</org.infinispan.protostream.version>
     <inventory.version>0.1.0-SNAPSHOT</inventory.version>
     <zxing.version>3.5.3</zxing.version>
-    <bcrypt.version>0.9.0</bcrypt.version>
+    <bcrypt.version>0.10.2</bcrypt.version>
   </properties>
 
   <dependencyManagement>
