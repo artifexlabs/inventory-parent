@@ -69,6 +69,11 @@
         <artifactId>inventory-impl</artifactId>
         <version>${inventory.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.artifexlabs.inventory</groupId>
+        <artifactId>inventory-impl-pg</artifactId>
+        <version>${inventory.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -88,6 +93,25 @@
 
   <build>
     <plugins>
+      <plugin>
+        <!-- Library jars consumed by the Quarkus apps MUST carry a Jandex
+             index (META-INF/jandex.idx): without one, ArC only finds their
+             types (producer return types like impl's UserStore) through the
+             flaky FacadeClassLoader fallback path — the intermittent
+             "Producer method return type not found in index" test-bootstrap
+             failures. Indexed jars are deterministic application archives. -->
+        <groupId>io.smallrye</groupId>
+        <artifactId>jandex-maven-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>make-index</id>
+            <goals>
+              <goal>jandex</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
