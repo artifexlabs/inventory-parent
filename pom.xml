@@ -61,39 +61,17 @@
   </distributionManagement>
 
   <properties>
-    <iblog.version>0.13.2-SNAPSHOT</iblog.version>
     <surefire.failIfNoTests>false</surefire.failIfNoTests>
     <jacoco.max.missed.classes>99</jacoco.max.missed.classes>
     <test.coverage.percentage.required>0</test.coverage.percentage.required>
     <org.infinispan.version>14.0.20.Final</org.infinispan.version>
     <org.infinispan.protostream.version>4.6.5.Final</org.infinispan.protostream.version>
-    <inventory.version>0.1.0-SNAPSHOT</inventory.version>
     <zxing.version>3.5.3</zxing.version>
     <bcrypt.version>0.10.2</bcrypt.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>io.artifexlabs.inventory</groupId>
-        <artifactId>inventory-api</artifactId>
-        <version>${inventory.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.artifexlabs.inventory</groupId>
-        <artifactId>inventory-impl</artifactId>
-        <version>${inventory.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.artifexlabs.inventory</groupId>
-        <artifactId>inventory-impl-pg</artifactId>
-        <version>${inventory.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.artifexlabs.inventory</groupId>
-        <artifactId>inventory-impl-changeset</artifactId>
-        <version>${inventory.version}</version>
-      </dependency>
       <!-- vertx-infinispan's jakarta line targets Infinispan 14 (15 hides
            DefaultCacheManager.getTransport(), 13 is the javax line, and the
            quarkus-bom's commons/protostream overrides must not leak in) —
