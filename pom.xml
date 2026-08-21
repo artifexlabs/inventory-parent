@@ -183,7 +183,42 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <!-- Release ceremony (Phase 19): version managed by the parent
+               chain; the tag and profile conventions live here. autoVersion-
+               Submodules keeps inventory-impl-root's modules on one version.
+               releaseProfiles=release rides ibparent-root's sources/javadoc
+               profile plus this pom's GPG signing below. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <tagNameFormat>v@{project.version}</tagNameFormat>
+            <releaseProfiles>release</releaseProfiles>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <signTag>true</signTag>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
+      <plugin>
+        <!-- Publishing destination (DECIDED 2026-08-21): Maven Central,
+             public, via the Central Portal. autoPublish stays FALSE — a
+             deploy stages the bundle for manual review/publication in the
+             portal; nothing goes public without an explicit human act.
+             (The parent chain manages this plugin with autoPublish=true;
+             this plugins-level entry deliberately overrides that.) -->
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.11.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>false</autoPublish>
+        </configuration>
+      </plugin>
       <plugin><!-- Library jars consumed by the Quarkus apps MUST carry a Jandex
              index (META-INF/jandex.idx): without one, ArC only finds their
              types (producer return types like impl's UserStore) through the
@@ -226,5 +261,31 @@
   </build>
 
   <profiles>
+    <profile>
+      <!-- Central requires signed artifacts; the parent chain manages the
+           gpg plugin VERSION but binds nothing. Signing uses the owner's
+           existing keys via the local gpg-agent — release builds only. -->
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <bestPractices>true</bestPractices>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
