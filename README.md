@@ -20,7 +20,10 @@ The POM for these components is based on the [InfrastructureBuilder Parent](http
 
 ## Build
 
-The CI and release builds for this application are kept in a private Kubernetes cluster.  They are published to Maven Central for consumption, but may not be suitable for general use.
+The CI builds for this application are managed by gitsubmodules to inventory-root.  They are published to Maven Central for consumption, but may not be suitable for general use.
+
+There are no CI releases for `inventory-parent`.  There **MAY**** be CI-releases for 
+other inventory projects.
 
 ## Release
 
@@ -28,5 +31,7 @@ This application is expected to have a regular (possibly fast) release cadence. 
 
 ## Versioning
 
-This project deals strictly in [Semantic Versions](https://semver.org).  Older major versions are extremely likely to go unsupported.
+This project deals strictly in [Semantic Versions](https://semver.org).  Older major versions are extremely likely to go unsupported.  Note that parents only release 
+major versions.  This the single-digit version of this parent.  However, any non-parent
+POM (or other artifact) will always have a 3-number full version (x.y.z).
 
