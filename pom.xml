@@ -148,8 +148,7 @@
         <artifactId>protostream-types</artifactId>
         <version>${org.infinispan.protostream.version}</version>
       </dependency>
-    <dependency>
-      <!-- QR rendering happens beside the label printer, in the labels worker -->
+    <dependency><!-- QR rendering happens beside the label printer, in the labels worker -->
       <groupId>com.google.zxing</groupId>
       <artifactId>core</artifactId>
       <version>${zxing.version}</version>
@@ -185,8 +184,7 @@
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <!-- Release ceremony (Phase 19): version managed by the parent
+        <plugin><!-- Release ceremony (Phase 19): version managed by the parent
                chain; the tag and profile conventions live here. autoVersion-
                Submodules keeps inventory-impl-root's modules on one version.
                releaseProfiles=release rides ibparent-root's sources/javadoc
@@ -203,8 +201,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <!-- Publishing destination (DECIDED 2026-08-21): Maven Central,
+      <plugin><!-- Publishing destination (DECIDED 2026-08-21): Maven Central,
              public, via the Central Portal. This entry ACTIVATES the plugin
              (ibparent-minimal manages version + config but binds nothing)
              and deliberately overrides its managed autoPublish=true:
