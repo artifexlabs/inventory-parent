@@ -205,14 +205,14 @@
     <plugins>
       <plugin>
         <!-- Publishing destination (DECIDED 2026-08-21): Maven Central,
-             public, via the Central Portal. autoPublish stays FALSE — a
-             deploy stages the bundle for manual review/publication in the
-             portal; nothing goes public without an explicit human act.
-             (The parent chain manages this plugin with autoPublish=true;
-             this plugins-level entry deliberately overrides that.) -->
+             public, via the Central Portal. This entry ACTIVATES the plugin
+             (ibparent-minimal manages version + config but binds nothing)
+             and deliberately overrides its managed autoPublish=true:
+             a deploy only STAGES the bundle for manual review/publication
+             in the portal — nothing goes public without an explicit human
+             act. Version comes from the chain's pluginManagement. -->
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>0.11.0</version>
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
