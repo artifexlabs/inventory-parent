@@ -64,7 +64,13 @@
     <surefire.failIfNoTests>false</surefire.failIfNoTests>
     <jacoco.max.missed.classes>99</jacoco.max.missed.classes>
     <test.coverage.percentage.required>0</test.coverage.percentage.required>
-    <org.infinispan.version>14.0.20.Final</org.infinispan.version>
+    <!-- 14.0.35.Final is the latest of the 14 line. 14.0.25.Final is the floor:
+         CVE-2023-5384 / GHSA-gg57-587f-h5v6 (cache config serialized to
+         XML/JSON/YAML leaks JDBC-store and remote-store credentials in clear
+         text) is patched there. The advisory also lists a 15.0.0.Dev range,
+         which is what GitHub surfaced first — irrelevant here, and the 15 line
+         is ruled out below regardless. -->
+    <org.infinispan.version>14.0.35.Final</org.infinispan.version>
     <org.infinispan.protostream.version>4.6.5.Final</org.infinispan.protostream.version>
     <zxing.version>3.5.3</zxing.version>
     <bcrypt.version>0.10.2</bcrypt.version>
