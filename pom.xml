@@ -71,66 +71,33 @@
          which is what GitHub surfaced first — irrelevant here, and the 15 line
          is ruled out below regardless. -->
     <org.infinispan.version>14.0.35.Final</org.infinispan.version>
-    <org.infinispan.protostream.version>4.6.5.Final</org.infinispan.protostream.version>
-    <zxing.version>3.5.3</zxing.version>
+    <zxing.version>3.5.4</zxing.version>
     <bcrypt.version>0.10.2</bcrypt.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <!-- vertx-infinispan's jakarta line targets Infinispan 14 (15 hides
-           DefaultCacheManager.getTransport(), 13 is the javax line, and the
-           quarkus-bom's commons/protostream overrides must not leak in) —
-           pin the whole embedded set coherently. -->
-    <dependency>
-      <groupId>org.infinispan</groupId>
-      <artifactId>infinispan-core-jakarta</artifactId>
-      <version>${org.infinispan.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.infinispan</groupId>
-      <artifactId>infinispan-multimap-jakarta</artifactId>
-      <version>${org.infinispan.version}</version>
-      </dependency>
+           DefaultCacheManager.getTransport(), 13 is the javax line) — so import
+           Infinispan's OWN bom and let it pin the embedded set coherently
+           instead of maintaining ten versions by hand. It also manages
+           protostream, at the version Infinispan was built against, which is
+           why there is no protostream property here: protostream's numbering
+           left the 4.x scheme (5.x, 6.0.x, then 14/15 to track Infinispan), so
+           a hand-held pin invites a bump into a line Infinispan 14 cannot use.
+
+           MUST stay in THIS pom's dependencyManagement: a pom's own management
+           beats anything inherited, which is what keeps the quarkus-bom's
+           commons/protostream overrides (imported up in artifex-maven-parent)
+           from leaking in. The bom manages only org.infinispan and
+           org.infinispan.protostream — 93 entries across two groupIds — so it
+           cannot perturb anything else Quarkus manages. -->
       <dependency>
         <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-core</artifactId>
+        <artifactId>infinispan-bom</artifactId>
         <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-multimap</artifactId>
-        <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-clustered-lock</artifactId>
-        <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-clustered-counter</artifactId>
-        <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-commons</artifactId>
-        <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-component-annotations</artifactId>
-        <version>${org.infinispan.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan.protostream</groupId>
-        <artifactId>protostream</artifactId>
-        <version>${org.infinispan.protostream.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan.protostream</groupId>
-        <artifactId>protostream-types</artifactId>
-        <version>${org.infinispan.protostream.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     <dependency><!-- QR rendering happens beside the label printer, in the labels worker -->
       <groupId>com.google.zxing</groupId>
